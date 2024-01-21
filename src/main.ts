@@ -20,9 +20,7 @@ let mapView: MapView;
 let venue: Mappedin;
 
 const selectorDiv = document.getElementById("selectorDiv")!;
-const mapGroupSelectElement = document.createElement("select");
 const mapLevelSelectElement = document.createElement("select");
-selectorDiv.appendChild(mapGroupSelectElement);
 selectorDiv.appendChild(mapLevelSelectElement);
 selectorDiv.style.cssText = "position: fixed; top: 1rem; left: 1rem;";
 
