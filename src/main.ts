@@ -31,10 +31,13 @@ function onLevelChange(event: Event) {
 }
 
 function populateMaps(maps: MappedinMap[]) {
+  // Sort maps by elevation in descending order
+  const sortedMaps = maps.sort((a, b) => b.elevation - a.elevation);
+
   mapLevelSelectElement.innerHTML = "";
   mapLevelSelectElement.onchange = onLevelChange;
 
-  maps.forEach((map) => {
+  sortedMaps.forEach((map) => {
     const option = document.createElement("option");
     option.text = map.name;
     option.value = map.id;
