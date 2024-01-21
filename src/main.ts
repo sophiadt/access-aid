@@ -11,9 +11,9 @@ import "@mappedin/mappedin-js/lib/mappedin.css";
 import "./style.css";
 
 const venueMakerOptions: TGetVenueMakerOptions = {
-  mapId: "659efcf1040fcba69696e7b6",
-  key: "65a0422df128bbf7c7072349",
-  secret: "5f72653eba818842c16c4fdb9c874ae02100ffced413f638b7bd9c65fd5b92a4",
+  mapId: "65ac7ecf04c23e7916b1d0f4",
+  key: "65ac8dda04c23e7916b1d101",
+  secret: "00a3575903e7048ab8107c91c99f690e2b0bf68530edcde8731207e71189108e",
 };
 
 let mapView: MapView;
