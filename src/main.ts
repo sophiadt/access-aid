@@ -1,4 +1,5 @@
 import {
+  E_SDK_EVENT,
   getVenueMaker,
   showVenue,
   TGetVenueMakerOptions,
@@ -9,7 +10,7 @@ import {
 import "@mappedin/mappedin-js/lib/mappedin.css";
 import "./style.css";
 
-const options: TGetVenueMakerOptions = {
+const venueMakerOptions: TGetVenueMakerOptions = {
   mapId: "659efcf1040fcba69696e7b6",
   key: "65a0422df128bbf7c7072349",
   secret: "5f72653eba818842c16c4fdb9c874ae02100ffced413f638b7bd9c65fd5b92a4",
@@ -31,7 +32,6 @@ function onLevelChange(event: Event) {
 }
 
 function populateMaps(maps: MappedinMap[]) {
-  // Sort maps by elevation in descending order
   const sortedMaps = maps.sort((a, b) => b.elevation - a.elevation);
 
   mapLevelSelectElement.innerHTML = "";
@@ -48,13 +48,43 @@ function populateMaps(maps: MappedinMap[]) {
 }
 
 async function init() {
-  venue = await getVenueMaker(options);
+  venue = await getVenueMaker(venueMakerOptions);
   mapView = await showVenue(document.getElementById("app")!, venue, { multiBufferRendering: true,
     outdoorView: {
       enabled: true
     }, firstMap: venue.maps[1] });
 
   populateMaps(venue.maps);
+
+  // Making polygons interactive allows them to respond to click and hover events.
+  mapView.addInteractivePolygonsForAllLocations();
+
+  // Display Floating Labels on all locations.
+  mapView.FloatingLabels.labelAllLocations();
+
+  // Capture when the user clicks on a polygon.
+  mapView.on(E_SDK_EVENT.CLICK, ({ polygons }) => {
+    if (polygons.length === 0) {
+      mapView.FloatingLabels.removeAll();
+      mapView.FloatingLabels.labelAllLocations();
+      return;
+    }
+
+    mapView.FloatingLabels.removeAll();
+    const location = mapView.getPrimaryLocationForPolygon(polygons[0]);
+    mapView.FloatingLabels.add(polygons[0], location.name, {
+      appearance: {
+        marker: {
+          size: 20
+        },
+        text: {
+          size: 32,
+          foregroundColor: "#ffb702",
+          backgroundColor: "#0a0a0a"
+        }
+      }
+    });
+  });
 }
 
 init();
